@@ -1,0 +1,56 @@
+---
+- name: Ansible 101 - Add (Merge) new VRF
+  hosts: ndfc
+  gather_facts: false
+  connection: httpapi
+  collections:
+    - cisco.dcnm
+  # This module supports the following states:
+  #
+  # Merged:
+  #   VRFs defined in the playbook will be merged into the target fabric.
+  #     - If the VRF does not exist it will be added.
+  #     - If the VRF exists but properties managed by the playbook are different
+  #       they will be updated if possible.
+  #     - VRFs that are not specified in the playbook will be untouched.
+  #
+  # Replaced:
+  #   VRFs defined in the playbook will be replaced in the target fabric.
+  #     - If the VRF does not exist it will be added.
+  #     - If the VRF exists but properties managed by the playbook are different
+  #       they will be updated if possible.
+  #     - Properties that can be managed by the module but are  not specified
+  #       in the playbook will be deleted or defaulted if possible.
+  #     - VRFs that are not specified in the playbook will be untouched.
+  #
+  # Overridden:
+  #   VRFs defined in the playbook will be overridden in the target fabric.
+  #     - If the VRF does not exist it will be added.
+  #     - If the VRF exists but properties managed by the playbook are different
+  #       they will be updated if possible.
+  #     - Properties that can be managed by the module but are not specified
+  #       in the playbook will be deleted or defaulted if possible.
+  #     - VRFs that are not specified in the playbook will be deleted.
+  #
+  # Deleted:
+  #   VRFs defined in the playbook will be deleted.
+  #   If no VRFs are provided in the playbook, all VRFs present on that DCNM fabric will be deleted.
+  #
+  # Query:
+  #   Returns the current DCNM state for the VRFs listed in the playbook.
+  #
+  tasks:
+  - name: Merge New VRF
+    dcnm_vrf:
+      fabric: CML-DC1
+      state: merged  # merged / overridden / replaced / deleted / query
+      config:
+        - vrf_name: ANSIBLE-VRF-1
+          vrf_id: 52101
+          vlan_id: 2101
+          attach:
+            - ip_address: 10.66.209.52
+            - ip_address: 10.66.209.53
+            - ip_address: 10.66.209.54
+            - ip_address: 10.66.209.55
+          deploy: true

@@ -1,0 +1,66 @@
+## Fabric to configure
+fabric: CML-DC1
+
+## Fabric Inventory
+inventory:
+
+  ## VMware Cluster 1 - Switch Ports ##
+  vmware_cluster1:
+    - name: DC1-LEAF-1
+      ip_address: 10.66.209.52
+      ports:
+        - Ethernet1/13
+        - Ethernet1/14
+    - name: DC1-LEAF-2
+      ip_address: 10.66.209.53
+      ports:
+        - Ethernet1/13
+        - Ethernet1/14
+
+### VRFs ###
+vrfs:
+  - vrf_name: ANSIBLE-DEMO-VRF-1
+    vrf_id: 52101
+    vlan_id: 2101
+    attach: "{{cluster1_switches}}"
+  - vrf_name: ANSIBLE-DEMO-VRF-2
+    vrf_id: 52102
+    vlan_id: 2102
+    attach: "{{cluster1_switches}}"
+  - vrf_name: ANSIBLE-DEMO-VRF-3
+    vrf_id: 52103
+    vlan_id: 2103
+    attach: "{{cluster1_switches}}"
+
+### Networks ###
+networks:
+  - net_name: ANSIBLE-DEMO-NET-1
+    vrf_name: ANSIBLE-DEMO-VRF-1
+    net_id: 30101
+    vlan_id: 3101
+    gw_ip_subnet: '192.168.1.1/24'
+    attach: "{{cluster1_ports}}"
+  - net_name: ANSIBLE-DEMO-NET-2
+    vrf_name: ANSIBLE-DEMO-VRF-1
+    net_id: 30102
+    vlan_id: 3102
+    gw_ip_subnet: '192.168.2.1/24'
+    attach: "{{cluster1_ports}}"
+  - net_name: ANSIBLE-DEMO-NET-3
+    vrf_name: ANSIBLE-DEMO-VRF-1
+    net_id: 30103
+    vlan_id: 3103
+    gw_ip_subnet: '192.168.3.1/24'
+    attach: "{{cluster1_ports}}"
+  - net_name: ANSIBLE-DEMO-NET-4
+    vrf_name: ANSIBLE-DEMO-VRF-1
+    net_id: 30104
+    vlan_id: 3104
+    gw_ip_subnet: '192.168.4.1/24'
+    attach: "{{cluster1_ports}}"
+  - net_name: ANSIBLE-DEMO-NET-5
+    vrf_name: ANSIBLE-DEMO-VRF-1
+    net_id: 30105
+    vlan_id: 3105
+    gw_ip_subnet: '192.168.5.1/24'
+    attach: "{{cluster1_ports}}"

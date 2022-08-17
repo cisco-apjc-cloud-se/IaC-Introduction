@@ -1,0 +1,33 @@
+---
+- name: Ansible 201 - Loops and Variables - Destroy VRFs and Networks
+  hosts: ndfc
+  gather_facts: false
+  connection: httpapi
+  collections:
+    - cisco.dcnm
+  vars_files:
+    - master-configuration.yaml
+  tasks:
+    - name: Build VMware Cluster 1 Switch Dictionary (dcnm_vrfs)
+      set_fact:
+        cluster1_switches: "{{ cluster1_switches | default([]) + [{ 'ip_address' : item.ip_address }] }}"
+      loop: "{{inventory.vmware_cluster1}}"
+    - name: Build VMware Cluster 1 Switch & Port Dictionary (dcnm_network)
+      set_fact:
+        cluster1_ports: "{{ cluster1_ports | default([]) + [{ 'ip_address':item.ip_address, 'ports':item.ports }] }}"
+      loop: "{{inventory.vmware_cluster1}}"
+    - name: debug
+      debug:
+        msg:
+          - "VMware Cluster 1 Switches: {{cluster1_switches}}"
+          - "VMware Cluster 1 Switches & Ports: {{cluster1_ports}}"
+    - name: Undeploy & Delete Networks
+      dcnm_network:
+        fabric: "{{fabric}}"
+        state: deleted # merged / overridden / replaced / deleted / query
+        config: "{{networks}}"
+    - name: Undeploy & Delete VRFs
+      dcnm_vrf:
+        fabric: "{{fabric}}"
+        state: deleted  # merged / overridden / replaced / deleted / query
+        config: "{{vrfs}}"

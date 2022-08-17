@@ -1,0 +1,113 @@
+### FABRIC NAME ###
+fabric: CML-DC1 # Used for multi-site fabric
+
+### FABRIC INVENTORY ###
+switches:
+  - dc1-leaf-1:
+    fabric  : CML-DC1
+  - dc1-leaf-2:
+    fabric  : CML-DC1
+  - dc1-bgw-1:
+    fabric  : CML-DC1
+  - dc1-bgw-2:
+    fabric  : CML-DC1
+
+### VRFs ###
+vrfs:
+  - vrf_name: TERRAFORM-DEMO-VRF1
+    vrf_id: 52201
+    vlan_id: 2201
+    attach:
+      - DC1-LEAF-1
+      - DC1-LEAF-2
+      - DC1-BGW-1
+      - DC1-BGW-2
+  - vrf_name: TERRAFORM-DEMO-VRF2
+    vrf_id: 52202
+    vlan_id: 2202
+    attach:
+      - DC1-LEAF-1
+      - DC1-LEAF-2
+      - DC1-BGW-1
+      - DC1-BGW-2
+  - vrf_name: TERRAFORM-DEMO-VRF3
+    vrf_id: 52203
+    vlan_id: 2203
+    attach:
+      - DC1-LEAF-1
+      - DC1-LEAF-2
+      - DC1-BGW-1
+      - DC1-BGW-2
+
+### NETWORKS ###
+networks:
+  - net_name: TERRAFORM-DEMO-NET1
+    vrf_name: TERRAFORM-DEMO-VRF1
+    net_id: 30201
+    vlan_id: 3201
+    gw_ip_subnet: '192.168.1.1/24'
+    attach:
+      - DC1-LEAF-1:
+        ports:
+          - Ethernet1/15
+          - Ethernet1/16
+      - DC1-LEAF-2:
+        ports:
+          - Ethernet1/15
+          - Ethernet1/16
+  - net_name: TERRAFORM-DEMO-NET2
+    vrf_name: TERRAFORM-DEMO-VRF1
+    net_id: 30202
+    vlan_id: 3202
+    gw_ip_subnet: '192.168.2.1/24'
+    attach:
+      - DC1-LEAF-1:
+        ports:
+          - Ethernet1/15
+          - Ethernet1/16
+      - DC1-LEAF-2:
+        ports:
+          - Ethernet1/15
+          - Ethernet1/16
+  - net_name: ANSIBLE-DEMO-NET3
+    vrf_name: ANSIBLE-DEMO-VRF1
+    net_id: 30203
+    vlan_id: 3203
+    gw_ip_subnet: '192.168.3.1/24'
+    attach:
+      - DC1-LEAF-1:
+        ports:
+          - Ethernet1/15
+          - Ethernet1/16
+      - DC1-LEAF-2:
+        ports:
+          - Ethernet1/15
+          - Ethernet1/16
+  - net_name: ANSIBLE-DEMO-NET4
+    vrf_name: ANSIBLE-DEMO-VRF1
+    net_id: 30204
+    vlan_id: 3204
+    gw_ip_subnet: '192.168.4.1/24'
+    attach:
+      - DC1-LEAF-1:
+        ports:
+          - Ethernet1/15
+          - Ethernet1/16
+      - DC1-LEAF-2:
+        ports:
+          - Ethernet1/15
+          - Ethernet1/16
+  - net_name: ANSIBLE-DEMO-NET5
+    vrf_name: ANSIBLE-DEMO-VRF1
+    net_id: 30205
+    vlan_id: 3205
+    gw_ip_subnet: '192.168.5.1/24'
+    attach:
+      - DC1-LEAF-1:
+        ports:
+          - Ethernet1/15
+          - Ethernet1/16
+      - DC1-LEAF-2:
+        ports:
+          - Ethernet1/15
+          - Ethernet1/16
